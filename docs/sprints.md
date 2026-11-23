@@ -18,7 +18,7 @@ El enunciado exige backlog, responsables, revisión, retrospectiva y release. Es
 - [ ] Registrar integrantes y responsables reales.
 - [x] Tres modelos JFLAP y tabla formal con 4 secuencias por autómata; validador automatizado incluido.
 - [ ] Capturas de las 12 ejecuciones en JFLAP y evidencia de revisión.
-- [ ] Grafo ponderado AMR y reconstrucción de ruta.
+- [x] Grafo ponderado de la Figura 5, ruta AMR, reconstrucción Dijkstra y pruebas locales.
 - [ ] FEFO, reposición y pruebas.
 - [x] Análisis escrito de 10 casos y tabla.
 - [x] Código de referencia y pruebas automatizadas de los casos.

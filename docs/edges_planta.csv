@@ -1,0 +1,12 @@
+origen,destino,distancia_m
+R,A,4
+R,B,2
+A,B,1
+A,P,3
+A,E,5
+B,P,7
+B,C,3
+C,P,2
+P,E,2
+C,E,4
+E,D,3

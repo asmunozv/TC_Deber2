@@ -12,7 +12,8 @@ Este repositorio documenta la **Fase D: diez correos de P, NP y NP-completitud**
 - ✅ Backlog de tres sprints **propuesto**, no retrospectiva de sprints ya ejecutados: `docs/sprints.md`.
 - ✅ Tres modelos JFLAP (.jff), sus diagramas Mermaid, definiciones formales y 12 secuencias documentadas: `docs/automatas_jflap.md`.
 - ⏳ Capturas de las doce ejecuciones en la aplicación JFLAP: **pendiente de obtener manualmente**.
-- ⏳ Grafo de planta AMR, rutas; pseudocódigo y pruebas FEFO/reposición: **pendiente**.
+- ✅ Grafo de planta AMR, Dijkstra, datos y 12 pruebas locales: `docs/planta_amr.md`, `src/planta_amr.py`, `tests/test_planta_amr.py`.
+- ⏳ Pseudocódigo y pruebas FEFO/reposición: **pendiente**.
 - ⏳ Informe PDF consolidado, presentación y release final: **pendiente**.
 
 ## Ejecución
@@ -40,3 +41,12 @@ Enunciado USFQ «Deber 2 Teoría de la Computación — LOGISTPULSE» y simulado
 ## Fase A · JFLAP
 
 Abrir `jflap/pedido.jff`, `jflap/reserva.jff` o `jflap/compra.jff` en JFLAP 7.x. Las entradas son símbolos de una sola letra: consulta `docs/automatas_jflap.md` para su significado y las **12 secuencias**. El conjunto de tests `tests/test_automatas.py` valida los XML y las secuencias con Python, pero la evidencia visual de **Input → Multiple Run** en JFLAP se debe añadir después.
+
+## Fase B · Planta AMR
+
+El grafo de la **Figura 5** incluye 7 vértices y 11 aristas ponderadas en metros. Ruta resaltada por el profesor **R → B → A → P → E → D = 11 m**; existe otro óptimo de **11 m** (`R → B → A → E → D`), que Dijkstra devuelve con este desempate. Documentación: `docs/planta_amr.md`; datos: `docs/edges_planta.csv`.
+
+```bash
+python -m src.planta_amr
+python -m unittest discover -s tests -v
+```
