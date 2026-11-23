@@ -130,7 +130,7 @@ python -m src.fefo_reposicion
 python -m unittest discover -s tests -v
 ```
 
-**Resultados esperados de la demostración:**
+**Resultados esperados de la demostración (código de ejemplo):**
 ```text
 FEFO: {'estado': 'OK', 'solicitado': 12, 'pendiente': 0, 'plan': [{'codigo': 'L001', 'cantidad': 4}, {'codigo': 'L002', 'cantidad': 5}, {'codigo': 'L003', 'cantidad': 3}], 'reserva_confirmada': True}
 Reposición: [{'sku': 'SKU-001', 'posicion': 23, 'sugerencia': 27}]
@@ -140,7 +140,7 @@ Segunda evaluación (sin duplicados): []
 
 **Cobertura de pruebas:** FEFO: normal con desempate, vencido, disponible 0, insuficiente, demanda 0, vencimiento hoy, sin mutaciones, fecha inválida, lote duplicado, demanda negativa. Reposición: ejemplo del enunciado, inventario superior al mínimo, posición igual al mínimo, órdenes abiertas, registro idempotente secuencial, lista vacía, varios SKU, duplicados y datos inválidos.
 
-**Distinción de evidencias:** las salidas indicadas son **esperadas** hasta ejecutar la implementación y registrar la salida observada. Los datos inventados L001/L002/L003 se utilizan solo para demostración; la fórmula 18+10−5 y sugerencia 27 sí procede literalmente del enunciado.
+**Evidencia observada:** GitHub Actions ejecutó `python -m unittest discover -s tests -v` en el commit `42a82346135e79b2220e2161efce607f2b3109bb` y reportó **44 tests, OK**; incluye las 20 pruebas nuevas de Fase C y los tests de fases anteriores. Registro: https://github.com/asmunozv/TC_Deber2/actions/runs/45272516718 . Las salidas impresas en el bloque anterior son las previstas por los datos de ejemplo y no se incluyeron como captura de la ejecución del comando demostrativo. Los datos inventados L001/L002/L003 se utilizan solo para demostración; la fórmula 18+10−5 y sugerencia 27 sí procede literalmente del enunciado.
 
 ## 4. Cumplimiento de la rúbrica
 
