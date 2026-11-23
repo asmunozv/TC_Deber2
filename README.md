@@ -10,7 +10,8 @@ Este repositorio documenta la **Fase D: diez correos de P, NP y NP-completitud**
 - ✅ Pruebas automatizadas: `tests/test_correos.py`.
 - ✅ Nota teórica sobre la parada: `docs/decidibilidad_parada.md`.
 - ✅ Backlog de tres sprints **propuesto**, no retrospectiva de sprints ya ejecutados: `docs/sprints.md`.
-- ⏳ Autómatas pedidos/reservas/compras JFLAP (.jff), sus diagramas y 12 secuencias: **pendiente**.
+- ✅ Tres modelos JFLAP (.jff), sus diagramas Mermaid, definiciones formales y 12 secuencias documentadas: `docs/automatas_jflap.md`.
+- ⏳ Capturas de las doce ejecuciones en la aplicación JFLAP: **pendiente de obtener manualmente**.
 - ⏳ Grafo de planta AMR, rutas; pseudocódigo y pruebas FEFO/reposición: **pendiente**.
 - ⏳ Informe PDF consolidado, presentación y release final: **pendiente**.
 
@@ -36,3 +37,6 @@ Para reproducibilidad, los resultados impresos por `python -m src.correos` son l
 
 ## Referencias
 Enunciado USFQ «Deber 2 Teoría de la Computación — LOGISTPULSE» y simulador educativo local «LOGISTPULSE · Laboratorio P, NP y NP-completo».
+## Fase A · JFLAP
+
+Abrir `jflap/pedido.jff`, `jflap/reserva.jff` o `jflap/compra.jff` en JFLAP 7.x. Las entradas son símbolos de una sola letra: consulta `docs/automatas_jflap.md` para su significado y las **12 secuencias**. El conjunto de tests `tests/test_automatas.py` valida los XML y las secuencias con Python, pero la evidencia visual de **Input → Multiple Run** en JFLAP se debe añadir después.

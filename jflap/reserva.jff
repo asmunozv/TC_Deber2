@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Exportación para JFLAP 7.x: autómata finito determinista. -->
+<structure>
+  <type>fa</type>
+  <automaton>
+    <state id="0" name="Solicitada">
+      <x>115.0</x>
+      <y>120.0</y>
+      <initial/>
+    </state>
+    <state id="1" name="Validada">
+      <x>310.0</x>
+      <y>120.0</y>
+    </state>
+    <state id="2" name="Reservada">
+      <x>505.0</x>
+      <y>120.0</y>
+    </state>
+    <state id="3" name="Consumida">
+      <x>700.0</x>
+      <y>120.0</y>
+      <final/>
+    </state>
+    <state id="4" name="Liberada">
+      <x>115.0</x>
+      <y>295.0</y>
+      <final/>
+    </state>
+    <state id="5" name="Rechazada">
+      <x>310.0</x>
+      <y>295.0</y>
+      <final/>
+    </state>
+    <transition><from>0</from><to>1</to><read>a</read></transition>
+    <transition><from>1</from><to>2</to><read>b</read></transition>
+    <transition><from>2</from><to>3</to><read>c</read></transition>
+    <transition><from>2</from><to>4</to><read>l</read></transition>
+    <transition><from>0</from><to>5</to><read>r</read></transition>
+    <transition><from>1</from><to>5</to><read>r</read></transition>
+  </automaton>
+</structure>

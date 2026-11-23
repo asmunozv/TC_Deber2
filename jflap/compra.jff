@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Exportación para JFLAP 7.x: autómata finito determinista. -->
+<structure>
+  <type>fa</type>
+  <automaton>
+    <state id="0" name="Borrador">
+      <x>115.0</x>
+      <y>120.0</y>
+      <initial/>
+    </state>
+    <state id="1" name="Aprobada">
+      <x>310.0</x>
+      <y>120.0</y>
+    </state>
+    <state id="2" name="Enviada">
+      <x>505.0</x>
+      <y>120.0</y>
+    </state>
+    <state id="3" name="Recibida">
+      <x>700.0</x>
+      <y>120.0</y>
+      <final/>
+    </state>
+    <state id="4" name="Rechazada">
+      <x>115.0</x>
+      <y>295.0</y>
+      <final/>
+    </state>
+    <transition><from>0</from><to>1</to><read>a</read></transition>
+    <transition><from>1</from><to>2</to><read>e</read></transition>
+    <transition><from>2</from><to>3</to><read>r</read></transition>
+    <transition><from>0</from><to>4</to><read>x</read></transition>
+    <transition><from>1</from><to>4</to><read>x</read></transition>
+  </automaton>
+</structure>

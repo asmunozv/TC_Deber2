@@ -16,7 +16,8 @@ El enunciado exige backlog, responsables, revisión, retrospectiva y release. Es
 
 ## Checklist final
 - [ ] Registrar integrantes y responsables reales.
-- [ ] Evidencia JFLAP de 3 autómatas, 4 secuencias cada uno.
+- [x] Tres modelos JFLAP y tabla formal con 4 secuencias por autómata; validador automatizado incluido.
+- [ ] Capturas de las 12 ejecuciones en JFLAP y evidencia de revisión.
 - [ ] Grafo ponderado AMR y reconstrucción de ruta.
 - [ ] FEFO, reposición y pruebas.
 - [x] Análisis escrito de 10 casos y tabla.
