@@ -268,10 +268,18 @@ def verificar_tsp(d, limite, ruta):
 def buscar_tsp(d, limite):
     validar_distancias(d, limite)
     n = len(d)
+    # Matriz validada una sola vez: O(n) por ruta, no O(n²).
     for p in permutations(range(1, n)):
         ruta = (0,) + p + (0,)
-        if verificar_tsp(d, limite, ruta):
-            return ruta, sum(d[u][v] for u, v in zip(ruta, ruta[1:]))
+        costo = 0
+        factible = True
+        for u, v in zip(ruta, ruta[1:]):
+            if d[u][v] is None:
+                factible = False
+                break
+            costo += d[u][v]
+        if factible and costo <= limite:
+            return ruta, costo
     return None
 
 
