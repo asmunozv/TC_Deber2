@@ -19,7 +19,8 @@ El enunciado exige backlog, responsables, revisión, retrospectiva y release. Es
 - [x] Tres modelos JFLAP y tabla formal con 4 secuencias por autómata; validador automatizado incluido.
 - [ ] Capturas de las 12 ejecuciones en JFLAP y evidencia de revisión.
 - [x] Grafo ponderado de la Figura 5, ruta AMR, reconstrucción Dijkstra y pruebas locales.
-- [ ] FEFO, reposición y pruebas.
+- [x] FEFO, reposición, pseudocódigo, reglas de validación y pruebas escritas.
+- [ ] Ejecutar y conservar evidencia observada de las pruebas FEFO/reposición en el entorno del equipo.
 - [x] Análisis escrito de 10 casos y tabla.
 - [x] Código de referencia y pruebas automatizadas de los casos.
 - [x] Nota sobre decidibilidad y parada.

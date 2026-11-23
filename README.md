@@ -13,7 +13,7 @@ Este repositorio documenta la **Fase D: diez correos de P, NP y NP-completitud**
 - ✅ Tres modelos JFLAP (.jff), sus diagramas Mermaid, definiciones formales y 12 secuencias documentadas: `docs/automatas_jflap.md`.
 - ⏳ Capturas de las doce ejecuciones en la aplicación JFLAP: **pendiente de obtener manualmente**.
 - ✅ Grafo de planta AMR, Dijkstra, datos y 12 pruebas locales: `docs/planta_amr.md`, `src/planta_amr.py`, `tests/test_planta_amr.py`.
-- ⏳ Pseudocódigo y pruebas FEFO/reposición: **pendiente**.
+- ✅ FEFO y reposición con pseudocódigo, validación y pruebas automatizadas: `docs/fefo_reposicion.md`, `src/fefo_reposicion.py`, `tests/test_fefo_reposicion.py`.
 - ⏳ Informe PDF consolidado, presentación y release final: **pendiente**.
 
 ## Ejecución
@@ -48,5 +48,14 @@ El grafo de la **Figura 5** incluye 7 vértices y 11 aristas ponderadas en metro
 
 ```bash
 python -m src.planta_amr
+python -m unittest discover -s tests -v
+```
+
+## Fase C · FEFO y reposición
+
+Prioridad FEFO por **fecha de vencimiento y código de lote**; plan parcial solo informativo y rechazo de reserva incompleta. Punto de pedido: `disponible + en_orden - reservado`, con sugerencia hasta el objetivo; las órdenes creadas se suman a `en_orden` para evitar duplicación secuencial. Detalles y límites de concurrencia en `docs/fefo_reposicion.md`.
+
+```bash
+python -m src.fefo_reposicion
 python -m unittest discover -s tests -v
 ```
