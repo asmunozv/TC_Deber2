@@ -2,7 +2,7 @@
 
 Equipo:
 - **Ariana Muñoz** — GitHub: [@asmunozv](https://github.com/asmunozv)
-- **Jeanneth** — GitHub: [@jaan](https://github.com/jaan)
+- **Jeanneth** — GitHub: [@jann1111](https://github.com/jann1111)
 
 Esta planificación distribuye las tareas de seguimiento y cierre entre las dos integrantes. No se usa para atribuir retrospectivamente código o reuniones que no estén comprobados. La contribución confirmada por el equipo es que **Ariana desarrolló los autómatas**. Las demás asignaciones indican quién queda responsable de revisar, validar, integrar o completar cada entregable.
 
@@ -11,7 +11,7 @@ Esta planificación distribuye las tareas de seguimiento y cierre entre las dos 
 | Integrante | Responsabilidad principal | Responsabilidad de apoyo |
 |---|---|---|
 | Ariana (@asmunozv) | Autómatas JFLAP; integración técnica; clasificación de los diez casos P/NP/NP-completos | Ejecutar pruebas, consolidar el informe y preparar el release |
-| Jeanneth (@jaan) | Revisión del grafo AMR/Dijkstra y de FEFO/reposición; validación de resultados | Revisión cruzada del informe y apoyo en la presentación |
+| Jeanneth (@jann1111) | Revisión del grafo AMR/Dijkstra y de FEFO/reposición; validación de resultados | Revisión cruzada del informe y apoyo en la presentación |
 
 ## Sprint 1 — Modelado formal y validación del modelo
 
@@ -70,7 +70,7 @@ Esta planificación distribuye las tareas de seguimiento y cierre entre las dos 
 ## Issues de seguimiento en GitHub
 
 - [Sprint 1 — Modelado formal y validación](https://github.com/asmunozv/TC_Deber2/issues/2) — asignado a Ariana; Jeanneth figura como responsable de revisión.
-- [Sprint 2 — Algoritmos logísticos y pruebas](https://github.com/asmunozv/TC_Deber2/issues/3) — Jeanneth es la responsable de revisión indicada en el issue; quedó sin asignación técnica de GitHub porque el repositorio no permite asignar actualmente a `@jaan`.
+- [Sprint 2 — Algoritmos logísticos y pruebas](https://github.com/asmunozv/TC_Deber2/issues/3) — Jeanneth es la responsable de revisión indicada en el issue; quedó sin asignación técnica de GitHub porque el repositorio no permite asignar actualmente a `@jann1111`.
 - [Sprint 3 — Complejidad, integración y release final](https://github.com/asmunozv/TC_Deber2/issues/1) — asignado a Ariana; Jeanneth figura como revisora.
 
-**Nota de permisos:** GitHub rechazó asignar issues a `@jaan` porque ese usuario no aparece como asignable en este repositorio. Para que Jeanneth pueda recibir asignaciones formales desde GitHub, la propietaria del repositorio debe invitar a `jaan` como colaboradora y ella debe aceptar la invitación. Mientras tanto, su responsabilidad queda descrita en este plan y en los issues, pero no como assignee técnico.
+**Nota de permisos:** GitHub rechazó asignar issues a `@jann1111` porque ese usuario no aparece como asignable en este repositorio. Para que Jeanneth pueda recibir asignaciones formales desde GitHub, la propietaria del repositorio debe invitar a `jann1111` como colaboradora y ella debe aceptar la invitación. Mientras tanto, su responsabilidad queda descrita en este plan y en los issues, pero no como assignee técnico.
