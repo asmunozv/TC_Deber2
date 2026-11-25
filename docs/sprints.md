@@ -69,7 +69,7 @@ Esta planificación distribuye las tareas de seguimiento y cierre entre las dos 
 ## Issues de seguimiento en GitHub
 
 - [Sprint 1 — Modelado formal y validación](https://github.com/asmunozv/TC_Deber2/issues/2) — asignado a Ariana; Jeanneth figura como responsable de revisión.
-- [Sprint 2 — Algoritmos logísticos y pruebas](https://github.com/asmunozv/TC_Deber2/issues/3) — Jeanneth es la responsable de revisión indicada en el issue; quedó sin asignación técnica de GitHub porque el repositorio no permite asignar actualmente a `@jann1111`.
+- [Sprint 2 — Algoritmos logísticos y pruebas](https://github.com/asmunozv/TC_Deber2/issues/3) — Jeanneth es la responsable de revisión indicada en el issue.
 - [Sprint 3 — Complejidad, integración y release final](https://github.com/asmunozv/TC_Deber2/issues/1) — asignado a Ariana; Jeanneth figura como revisora.
 
-**Nota de permisos:** GitHub rechazó asignar issues a `@jann1111` porque ese usuario no aparece como asignable en este repositorio. Para que Jeanneth pueda recibir asignaciones formales desde GitHub, la propietaria del repositorio debe invitar a `jann1111` como colaboradora y ella debe aceptar la invitación. Mientras tanto, su responsabilidad queda descrita en este plan y en los issues, pero no como assignee técnico.
+**Asignación del Sprint 2:** GitHub registra a Jeanneth (`@jann1111`) como responsable del issue #3.
