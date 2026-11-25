@@ -58,12 +58,12 @@ Integrantes:
 
 ## 6. Lista de control del release final
 
-- [ ] Informe PDF final revisado.
-- [ ] Presentación final revisada.
+- [x] Informe PDF final revisado.
+- [x] Presentación final revisada.
 - [ ] Capturas JFLAP incorporadas y legibles.
-- [ ] Suite completa ejecutada después de los últimos cambios.
-- [ ] Revisiones cruzadas registradas.
+- [x] Suite completa ejecutada después de los últimos cambios.
+- [x] Revisiones cruzadas registradas.
 - [x] Retrospectivas de los tres sprints redactadas y aprobadas por Ariana y Jeanneth.
-- [ ] Fechas de las tres retrospectivas incorporadas.
+- [x] Fechas de las tres retrospectivas incorporadas.
 - [ ] Etiqueta Git `v1.0.0` creada.
 - [ ] GitHub Release `LOGISTPULSE v1.0.0` publicado.

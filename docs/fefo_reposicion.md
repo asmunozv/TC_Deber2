@@ -126,8 +126,8 @@ REGISTRAR_SUGERENCIAS(productos)
 **Implementación:** `src/fefo_reposicion.py`. **Pruebas:** `tests/test_fefo_reposicion.py`. No requiere paquetes externos.
 
 ```bash
-python -m src.fefo_reposicion
-python -m unittest discover -s tests -v
+python3 -m src.fefo_reposicion
+python3 -m unittest discover -s tests -v
 ```
 
 **Resultados esperados de la demostración (código de ejemplo):**

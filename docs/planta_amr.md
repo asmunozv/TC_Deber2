@@ -105,8 +105,8 @@ DIJKSTRA_AMR(grafo, origen, destino, bloqueadas)
 Código: `src/planta_amr.py`. Pruebas: `tests/test_planta_amr.py`.
 
 ```bash
-python -m src.planta_amr
-python -m unittest discover -s tests -v
+python3 -m src.planta_amr
+python3 -m unittest discover -s tests -v
 ```
 
 **Salida observada en la ejecución local de referencia:**

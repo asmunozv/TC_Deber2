@@ -1,0 +1,101 @@
+LOGISTPULSE - REGISTRO AUTÉNTICO DE EJECUCIÓN
+Fecha local: 2026-11-25 (America/Guayaquil)
+Rama: finalizacion-deber2
+Python local: 3.9.6
+Java: 21.0.8 LTS
+
+COMANDO
+python3 -m unittest discover -s tests -v
+
+RESUMEN OBSERVADO
+Ran 46 tests in 0.012s
+OK
+Exitosas: 46
+Fallidas: 0
+Errores: 0
+Omitidas: 0
+
+PRUEBAS OBSERVADAS
+test_cadenas_y_trazas (test_automatas.TestJFLAP) ... ok
+test_definicion_formal_exacta (test_automatas.TestJFLAP) ... ok
+test_dfa_parcial_equivale_a_total_con_pozo (test_automatas.TestJFLAP) ... ok
+test_todos_los_estados_son_alcanzables (test_automatas.TestJFLAP) ... ok
+test_c1 (test_correos.TestCorreos) ... ok
+test_c2 (test_correos.TestCorreos) ... ok
+test_c3 (test_correos.TestCorreos) ... ok
+test_n1 (test_correos.TestCorreos) ... ok
+test_n2 (test_correos.TestCorreos) ... ok
+test_n3 (test_correos.TestCorreos) ... ok
+test_n4 (test_correos.TestCorreos) ... ok
+test_p1 (test_correos.TestCorreos) ... ok
+test_p2 (test_correos.TestCorreos) ... ok
+test_p3 (test_correos.TestCorreos) ... ok
+test_cantidad_cero (test_fefo_reposicion.TestFEFO) ... ok
+test_codigo_duplicado (test_fefo_reposicion.TestFEFO) ... ok
+test_excluye_vencidos_y_cantidad_cero (test_fefo_reposicion.TestFEFO) ... ok
+test_fecha_invalida (test_fefo_reposicion.TestFEFO) ... ok
+test_fefo_orden_fecha_codigo (test_fefo_reposicion.TestFEFO) ... ok
+test_negativa (test_fefo_reposicion.TestFEFO) ... ok
+test_no_modifica_entrada (test_fefo_reposicion.TestFEFO) ... ok
+test_stock_insuficiente_sin_reserva_parcial (test_fefo_reposicion.TestFEFO) ... ok
+test_vencimiento_hoy_elegible (test_fefo_reposicion.TestFEFO) ... ok
+test_ejemplo_enunciado (test_fefo_reposicion.TestReposicion) ... ok
+test_entrada_negativa (test_fefo_reposicion.TestReposicion) ... ok
+test_igual_minimo (test_fefo_reposicion.TestReposicion) ... ok
+test_lista_vacia (test_fefo_reposicion.TestReposicion) ... ok
+test_no_reponer_por_encima_minimo (test_fefo_reposicion.TestReposicion) ... ok
+test_objetivo_invalido (test_fefo_reposicion.TestReposicion) ... ok
+test_orden_abierta_previa (test_fefo_reposicion.TestReposicion) ... ok
+test_reservado_supera_fisico (test_fefo_reposicion.TestReposicion) ... ok
+test_sin_duplicar_orden (test_fefo_reposicion.TestReposicion) ... ok
+test_sku_duplicado (test_fefo_reposicion.TestReposicion) ... ok
+test_varios_skus (test_fefo_reposicion.TestReposicion) ... ok
+test_arista_duplicada (test_planta_amr.TestPlantaAMR) ... ok
+test_destino_bloqueado (test_planta_amr.TestPlantaAMR) ... ok
+test_empate_dos_rutas (test_planta_amr.TestPlantaAMR) ... ok
+test_grafo_asimetrico (test_planta_amr.TestPlantaAMR) ... ok
+test_grafo_identico_figura (test_planta_amr.TestPlantaAMR) ... ok
+test_inaccesible (test_planta_amr.TestPlantaAMR) ... ok
+test_origen_igual_destino (test_planta_amr.TestPlantaAMR) ... ok
+test_origen_inexistente (test_planta_amr.TestPlantaAMR) ... ok
+test_peso_negativo (test_planta_amr.TestPlantaAMR) ... ok
+test_ruta_minima (test_planta_amr.TestPlantaAMR) ... ok
+test_ruta_resaltada_enunciado (test_planta_amr.TestPlantaAMR) ... ok
+test_zona_bloqueada (test_planta_amr.TestPlantaAMR) ... ok
+
+COMANDO
+python3 -m src.planta_amr
+
+SALIDA OBSERVADA
+Ruta mínima R→D: R → B → A → E → D = 11 m
+Ruta resaltada en Figura 5: R → B → A → P → E → D = 11 m
+Con P bloqueado: (['R', 'B', 'A', 'E', 'D'], 11)
+Con A y P bloqueados: (['R', 'B', 'C', 'E', 'D'], 12)
+
+COMANDO
+python3 -m src.fefo_reposicion
+
+SALIDA OBSERVADA
+FEFO: {'estado': 'OK', 'solicitado': 12, 'pendiente': 0, 'plan': [{'codigo': 'L001', 'cantidad': 4}, {'codigo': 'L002', 'cantidad': 5}, {'codigo': 'L003', 'cantidad': 3}], 'reserva_confirmada': True}
+Reposición: [{'sku': 'SKU-001', 'posicion': 23, 'sugerencia': 27}]
+Órdenes generadas: [{'sku': 'SKU-001', 'cantidad': 27}]
+Segunda evaluación (sin duplicados): []
+
+COMANDO
+python3 -m src.correos
+
+SALIDA OBSERVADA
+P1 ['Durán', 'Quito', 'Norte']
+P2 (['Quito', 'Latacunga', 'Guayaquil'], 8)
+P3 10
+N1 (1, 0, 2)
+N2 7
+N3 6
+N4 (0, 2, 1)
+C1 {1: True, 2: True, 3: True}
+C2 ((0, 1, 2, 0), 15)
+C3 {'B'}
+
+ESTADO JFLAP
+Java está disponible. No se encontró JFLAP instalado ni se generaron capturas simuladas.
+Las seis capturas reales siguen pendientes según docs/evidencias/jflap/README.md.

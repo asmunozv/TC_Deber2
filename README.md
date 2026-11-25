@@ -1,61 +1,96 @@
-# LOGISTPULSE — Deber 2 de Teoría de la Computación
+# LOGISTPULSE - Deber 2 de Teoría de la Computación
 
-Universidad San Francisco de Quito · Teoría de la Computación.
+Proyecto académico de la Universidad San Francisco de Quito que aplica autómatas finitos, grafos ponderados, políticas de inventario, decidibilidad y complejidad computacional a procesos logísticos.
 
-Este repositorio documenta la **Fase D: diez correos de P, NP y NP-completitud** con código Python y pruebas, y registra los demás entregables requeridos por el enunciado.
+## Integrantes confirmadas
 
-## Estado real del trabajo
-- ✅ Diez fichas y tabla resumen: `docs/fichas_correos.md` y `docs/tabla_resumen.md`.
-- ✅ Algoritmos y verificadores: `src/correos.py`.
-- ✅ Pruebas automatizadas: `tests/test_correos.py`.
-- ✅ Nota teórica sobre la parada: `docs/decidibilidad_parada.md`.
-- ✅ Backlog de tres sprints **propuesto**, no retrospectiva de sprints ya ejecutados: `docs/sprints.md`.
-- ✅ Tres modelos JFLAP (.jff), sus diagramas Mermaid, definiciones formales y 12 secuencias documentadas: `docs/automatas_jflap.md`.
-- ⏳ Capturas de las doce ejecuciones en la aplicación JFLAP: **pendiente de obtener manualmente**.
-- ✅ Grafo de planta AMR, Dijkstra, datos y 12 pruebas locales: `docs/planta_amr.md`, `src/planta_amr.py`, `tests/test_planta_amr.py`.
-- ✅ FEFO y reposición con pseudocódigo, validación y pruebas automatizadas: `docs/fefo_reposicion.md`, `src/fefo_reposicion.py`, `tests/test_fefo_reposicion.py`.
-- ⏳ Informe PDF consolidado, presentación y release final: **pendiente**.
+- Ariana Muñoz - [@asmunozv](https://github.com/asmunozv)
+- Jeanneth Cabascango - [@jann1111](https://github.com/jann1111)
+
+## Objetivos
+
+- Modelar pedidos, reservas y órdenes de compra como AFD compatibles con JFLAP.
+- Calcular rutas AMR mínimas mediante Dijkstra.
+- Implementar FEFO y la regla de reposición por posición de inventario.
+- Analizar diez problemas de P, NP y NP-completitud con algoritmos y verificadores.
+- Diferenciar decidibilidad, computabilidad, complejidad y eficiencia práctica.
+
+## Resultados principales
+
+- Los tres AFD incluyen todos los estados requeridos: cancelación desde `Reservado`, reserva `Expirada`, compra `En aprobación` y `Recepción parcial`.
+- Dijkstra encuentra costo mínimo **11 m**. Son óptimas `R-B-A-P-E-D` y `R-B-A-E-D`.
+- FEFO selecciona `L001:4`, `L002:5`, `L003:3` para la demanda de ejemplo.
+- Reposición obtiene posición **23** y sugerencia **27**.
+- La ejecución local final reportó **46 pruebas, 46 exitosas, 0 fallos**.
+
+## Estructura
+
+| Ruta | Contenido |
+|---|---|
+| [`jflap/`](jflap/) | Tres autómatas `.jff` |
+| [`src/`](src/) | Dijkstra, FEFO/reposición y diez casos |
+| [`tests/`](tests/) | Pruebas unitarias reproducibles |
+| [`docs/`](docs/) | Formalización, fichas, sprints, auditoría y evidencias |
+| [`informe/`](informe/) | Fuente LaTeX y PDF técnico final |
+| [`presentacion/`](presentacion/) | Presentación editable y guion de 9:10 |
+| [`scripts/`](scripts/) | Generador reproducible del PDF |
+
+## Requisitos e instalación
+
+- Python 3.9 o superior. No hay dependencias externas para ejecutar código y pruebas.
+- Java para JFLAP. El entorno de finalización usó Java 21.
+- JFLAP 7.1 para las capturas manuales: [descarga oficial](https://www.jflap.org/jflaptmp/).
+- Para regenerar el PDF sin LaTeX: `reportlab`. La fuente editable también está disponible en [`informe/informe_final.tex`](informe/informe_final.tex).
+
+```bash
+git clone https://github.com/asmunozv/TC_Deber2.git
+cd TC_Deber2
+python3 -m unittest discover -s tests -v
+```
 
 ## Ejecución
-Requiere Python 3.10+; no hay dependencias externas.
 
 ```bash
-python -m unittest discover -s tests -v
-python -m src.correos
+python3 -m src.planta_amr
+python3 -m src.fefo_reposicion
+python3 -m src.correos
 ```
 
-Los casos del simulador son *instancias de demostración*. Las afirmaciones de complejidad se refieren a problemas generales, no a que las instancias pequeñas sean difíciles. En el correo C1, el ejemplo tiene cláusulas de **2-CNF** (resoluble en P), mientras que la NP-completitud corresponde a **3-SAT general**. Todos los problemas analizados son decidibles.
+La salida observada completa se conserva en [`docs/evidencias/resultados_tests.txt`](docs/evidencias/resultados_tests.txt).
 
-## Organización
-- `docs/fichas_correos.md`: diez fichas formales y reducciones de C1, C2, C3.
-- `docs/tabla_resumen.md`: comparación de clase, tiempo/espacio, decidibilidad y estrategia.
-- `src/correos.py`: diez solucionadores y verificadores separados.
-- `tests/test_correos.py`: pruebas normales, negativas, límite e inválidas.
-- `docs/sprints.md`: backlog y planificación.
-- `docs/decidibilidad_parada.md`: distinción entre decidibilidad, computabilidad y eficiencia.
+## Autómatas y JFLAP
 
-Para reproducibilidad, los resultados impresos por `python -m src.correos` son los datos de ejemplo. No se ha completado todavía la fase de simulación JFLAP.
-
-## Referencias
-Enunciado USFQ «Deber 2 Teoría de la Computación — LOGISTPULSE» y simulador educativo local «LOGISTPULSE · Laboratorio P, NP y NP-completo».
-## Fase A · JFLAP
-
-Abrir `jflap/pedido.jff`, `jflap/reserva.jff` o `jflap/compra.jff` en JFLAP 7.x. Las entradas son símbolos de una sola letra: consulta `docs/automatas_jflap.md` para su significado y las **12 secuencias**. El conjunto de tests `tests/test_automatas.py` valida los XML y las secuencias con Python, pero la evidencia visual de **Input → Multiple Run** en JFLAP se debe añadir después.
-
-## Fase B · Planta AMR
-
-El grafo de la **Figura 5** incluye 7 vértices y 11 aristas ponderadas en metros. Ruta resaltada por el profesor **R → B → A → P → E → D = 11 m**; existe otro óptimo de **11 m** (`R → B → A → E → D`), que Dijkstra devuelve con este desempate. Documentación: `docs/planta_amr.md`; datos: `docs/edges_planta.csv`.
+La definición formal, las transiciones, 23 cadenas de prueba y sus trazas están en [`docs/automatas_jflap.md`](docs/automatas_jflap.md). Los modelos son AFD parciales equivalentes a AFD totales con un estado pozo no final.
 
 ```bash
-python -m src.planta_amr
-python -m unittest discover -s tests -v
+java -jar /ruta/a/JFLAP7.1.jar
 ```
 
-## Fase C · FEFO y reposición
+Después de abrir cada `.jff`, usar `Input > Multiple Run` con las cadenas documentadas. Las seis capturas auténticas deben guardarse en `docs/evidencias/jflap/`. No se incluyeron imágenes simuladas; el protocolo exacto está en [`docs/evidencias/jflap/README.md`](docs/evidencias/jflap/README.md).
 
-Prioridad FEFO por **fecha de vencimiento y código de lote**; plan parcial solo informativo y rechazo de reserva incompleta. Punto de pedido: `disponible + en_orden - reservado`, con sugerencia hasta el objetivo; las órdenes creadas se suman a `en_orden` para evitar duplicación secuencial. Detalles y límites de concurrencia en `docs/fefo_reposicion.md`.
+## Documentación técnica
 
-```bash
-python -m src.fefo_reposicion
-python -m unittest discover -s tests -v
-```
+- [Autómatas JFLAP](docs/automatas_jflap.md)
+- [Grafo de planta y Dijkstra](docs/planta_amr.md)
+- [FEFO y reposición](docs/fefo_reposicion.md)
+- [Diez fichas](docs/fichas_correos.md) y [tabla comparativa](docs/tabla_resumen.md)
+- [Decidibilidad y problema de la parada](docs/decidibilidad_parada.md)
+- [Auditoría de requisitos](docs/auditoria_entrega.md)
+- [Gestión de sprints](docs/sprints.md) y [seguimiento del equipo](docs/seguimiento_equipo.md)
+
+## Informe y presentación
+
+- PDF final: [`informe/LOGISTPULSE_Informe_Final.pdf`](informe/LOGISTPULSE_Informe_Final.pdf)
+- Fuente editable: [`informe/informe_final.tex`](informe/informe_final.tex)
+- Presentación editable: [`presentacion/LOGISTPULSE_Presentacion_Final.pptx`](presentacion/LOGISTPULSE_Presentacion_Final.pptx)
+- Guion oral: [`presentacion/guion_exposicion.md`](presentacion/guion_exposicion.md)
+
+La presentación tiene 12 diapositivas, tablas y diagramas editables, notas del expositor y una duración sugerida de 9 minutos 10 segundos.
+
+## Integración continua
+
+GitHub Actions ejecuta pruebas y demostraciones en Python 3.10, 3.11 y 3.12 para `main`, `finalizacion-deber2` y pull requests.
+
+## Estado de versión
+
+La versión propuesta es `v1.0.0`, pero no se ha creado tag ni release. Antes de publicarla deben incorporarse las seis capturas reales de JFLAP, revisar PDF/presentación y contar con permisos de la propietaria para fusionar el PR. El detalle final está en [`ENTREGA_FINAL.md`](ENTREGA_FINAL.md).
