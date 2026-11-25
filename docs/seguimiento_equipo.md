@@ -4,7 +4,7 @@ Este documento es un formato para registrar revisiones y retrospectivas reales. 
 
 Integrantes:
 - Ariana Muñoz — @asmunozv
-- Jeanneth — @jaan
+- Jeanneth — @jann1111
 
 ## 1. Registro de revisiones cruzadas
 
