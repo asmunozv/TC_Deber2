@@ -1,0 +1,256 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[a4paper,margin=2.2cm,headheight=14pt]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,automata}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\definecolor{azul}{HTML}{153B5B}
+\definecolor{verde}{HTML}{1B7F79}
+\definecolor{gris}{HTML}{F2F5F7}
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=verde,citecolor=azul}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{LOGISTPULSE}
+\rhead{Teoría de la Computación}
+\cfoot{\thepage}
+\setlist{nosep,leftmargin=*}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{gris},frame=single,
+  breaklines=true,columns=fullflexible}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{\vspace{-1cm}\textbf{LOGISTPULSE}\\[0.3cm]
+\Large Decisiones, algoritmos y límites computacionales\\[0.4cm]
+\large Deber 2 -- Informe técnico final}
+\author{Ariana Muñoz \and Jeanneth Cabascango\\
+Universidad San Francisco de Quito}
+\date{25 de noviembre de 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{center}
+\vfill
+\textbf{Repositorio:} \url{https://github.com/asmunozv/TC_Deber2}\\[0.4cm]
+\textbf{Rama de finalización:} \code{finalizacion-deber2}\\[0.8cm]
+\fbox{\parbox{0.86\textwidth}{\small Este informe distingue resultados automatizados de evidencia visual. Los archivos JFLAP y sus pruebas se verificaron; las seis capturas de la aplicación JFLAP permanecen pendientes de ejecución manual y no se sustituyen con imágenes fabricadas.}}
+\vfill
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Resumen y objetivos}
+
+LOGISTPULSE integra autómatas finitos, rutas en grafos ponderados, políticas de inventario y teoría de complejidad en un sistema logístico. Se completaron tres AFD, Dijkstra para una planta de siete zonas, FEFO, la regla de reposición y diez expedientes de decisión. La implementación usa Python 3.10 o superior y una suite de 46 pruebas. El objetivo es demostrar corrección, terminación, complejidad y límites computacionales sin confundir una instancia pequeña con la complejidad del problema general.
+
+\section{Autómatas de procesos logísticos}
+
+Un AFD se expresa como $M=(Q,\Sigma,\delta,q_0,F)$. Los tres modelos son deterministas y parciales: una transición ausente rechaza la cadena. Cada modelo parcial equivale a un AFD total que añade un estado no final $q_{\bot}$, dirige a él todo par $(q,s)$ no definido y satisface $\delta(q_{\bot},s)=q_{\bot}$ para todo $s\in\Sigma$.
+
+\subsection{Pedido}
+
+\begin{align*}
+Q_P={}&\{\text{Borrador, Confirmado, Reservado, Preparación, Empacado,}\nonumber\\
+&\text{Despachado, Entregado, Cancelado}\},\\
+\Sigma_P={}&\{a,b,c,d,e,f,x\},\quad q_{0P}=\text{Borrador},\\
+F_P={}&\{\text{Entregado, Cancelado}\}.
+\end{align*}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.45cm and 1.2cm,>=Stealth,auto,
+ state/.style={circle,draw=azul,thick,minimum size=10mm,font=\scriptsize},
+ final/.style={circle,draw=verde,double,thick,minimum size=10mm,font=\scriptsize}]
+\node[state,initial] (b) {Borrador};
+\node[state,right=of b] (c) {Confirmado};
+\node[state,right=of c] (r) {Reservado};
+\node[state,right=of r] (p) {Preparación};
+\node[state,below=of p] (e) {Empacado};
+\node[state,left=of e] (d) {Despachado};
+\node[final,left=of d] (t) {Entregado};
+\node[final,below=of c] (x) {Cancelado};
+\path[->,thick] (b) edge node {a} (c) (c) edge node {b} (r)
+ (r) edge node {c} (p) (p) edge node {d} (e) (e) edge node {e} (d)
+ (d) edge node {f} (t) (b) edge[bend right=20] node[left] {x} (x)
+ (c) edge node {x} (x) (r) edge[bend left=25] node[right] {x} (x);
+\end{tikzpicture}
+\end{center}
+
+La transición $\text{Reservado}\xrightarrow{x}\text{Cancelado}$ representa una operación atómica: libera el inventario y cierra el pedido. El despacho solo se alcanza después de reserva, preparación y empaque. Los finales representan cierre, por lo que Cancelado no significa entrega exitosa.
+
+\subsection{Reserva de inventario}
+
+\begin{align*}
+Q_R={}&\{\text{Solicitada, Validada, Reservada, Consumida, Liberada, Rechazada, Expirada}\},\\
+\Sigma_R={}&\{a,b,c,l,r,v\},\quad q_{0R}=\text{Solicitada},\\
+F_R={}&\{\text{Consumida, Liberada, Rechazada, Expirada}\}.
+\end{align*}
+
+La secuencia principal es $\text{Solicitada}\xrightarrow{a}\text{Validada}\xrightarrow{b}\text{Reservada}$. Desde Reservada se puede consumir ($c$), liberar ($l$) o expirar ($v$). Expirada se incorpora porque el vencimiento del plazo libera una reserva ya confirmada. No existe transición que permita consumir desde Solicitada o Validada.
+
+\subsection{Orden de compra}
+
+\begin{align*}
+Q_C={}&\{\text{Borrador, En aprobación, Aprobada, Enviada, Recepción parcial,}\nonumber\\
+&\text{Recibida, Rechazada}\},\\
+\Sigma_C={}&\{a,p,e,r,c,x\},\quad q_{0C}=\text{Borrador},\\
+F_C={}&\{\text{Recibida, Rechazada}\}.
+\end{align*}
+
+La orden pasa por solicitud de aprobación ($a$), aprobación ($p$) y envío ($e$). Desde Enviada puede cerrarse con una recepción completa ($c$) o registrar una recepción parcial ($r$); el bucle $r$ permite más entregas parciales y $c$ completa la orden. Rechazada es terminal y nunca habilita el envío.
+
+\subsection{Cadenas de validación}
+
+\begin{longtable}{@{}p{1.7cm}p{1.7cm}p{1.4cm}p{8.5cm}@{}}
+\toprule
+AFD & Cadena & Resultado & Traza o causa \\ \midrule
+\endhead
+Pedido & \code{abcdef} & Acepta & Flujo completo hasta Entregado.\\
+Pedido & \code{abx} & Acepta & Cancelación desde Reservado después de liberar inventario.\\
+Pedido & vacía & Rechaza & Borrador no es final.\\
+Pedido & \code{ae} & Rechaza & No existe salto desde Confirmado a Despachado.\\
+Pedido & \code{abcdefx} & Rechaza & Entregado no admite eventos posteriores.\\
+Reserva & \code{abc} & Acepta & Solicitada, Validada, Reservada, Consumida.\\
+Reserva & \code{abl} & Acepta & Reserva confirmada y liberada.\\
+Reserva & \code{abv} & Acepta & Reserva confirmada que expira.\\
+Reserva & \code{ac} & Rechaza & No se consume antes de reservar.\\
+Reserva & \code{abvc} & Rechaza & Expirada es terminal.\\
+Compra & \code{apec} & Acepta & Aprobación, envío y recepción completa directa.\\
+Compra & \code{aperc} & Acepta & Incluye una recepción parcial.\\
+Compra & \code{aperrc} & Acepta & Incluye dos recepciones parciales.\\
+Compra & \code{ae} & Rechaza & No se envía sin aprobación.\\
+Compra & \code{xe} & Rechaza & Rechazada no puede enviarse.\\
+\bottomrule
+\end{longtable}
+
+Las pruebas Python observaron los resultados esperados, validaron el XML y comprobaron que todos los estados son alcanzables. JFLAP 7.1 requiere ejecución manual mediante \emph{Input $>$ Multiple Run}; las capturas auténticas siguen pendientes.
+
+\section{Grafo ponderado y ruta AMR}
+
+La planta es un grafo no dirigido $G=(V,E,w)$ con $V=\{R,A,B,C,P,E,D\}$ y pesos no negativos en metros. Las once aristas son: $RA=4$, $RB=2$, $AB=1$, $AP=3$, $AE=5$, $BP=7$, $BC=3$, $CP=2$, $PE=2$, $CE=4$ y $ED=3$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0,every node/.style={circle,draw=azul,thick,fill=white,minimum size=8mm},
+ every edge/.style={draw=azul,thick},route/.style={draw=verde,very thick}]
+\node (R) at (0,1.5) {R}; \node (B) at (2,0.3) {B}; \node (A) at (2,2.7) {A};
+\node (C) at (4,0) {C}; \node (P) at (4.5,2.1) {P}; \node (E) at (6.5,1.5) {E}; \node (D) at (8.5,1.5) {D};
+\path[-] (R) edge node[above left,draw=none] {4} (A)
+ (R) edge[route] node[below left,draw=none] {2} (B)
+ (A) edge[route] node[right,draw=none] {1} (B)
+ (A) edge[route] node[above,draw=none] {3} (P)
+ (A) edge node[above,draw=none] {5} (E)
+ (B) edge node[above,draw=none] {7} (P)
+ (B) edge node[below,draw=none] {3} (C)
+ (C) edge node[right,draw=none] {2} (P)
+ (P) edge[route] node[above,draw=none] {2} (E)
+ (C) edge node[below,draw=none] {4} (E)
+ (E) edge[route] node[above,draw=none] {3} (D);
+\end{tikzpicture}
+\end{center}
+
+Dijkstra mantiene $dist[v]$, un predecesor y una cola de prioridad. La ruta resaltada $R-B-A-P-E-D$ cuesta $2+1+3+2+3=11$ m. También es óptima $R-B-A-E-D$, con costo $11$ m; el código devuelve esta última por el orden de desempate. Con listas de adyacencia y montículo, el tiempo es $O((V+E)\log V)$ y el espacio $O(V+E)$. Los tests cubren bloqueos, destino inalcanzable, origen igual al destino, pesos inválidos y asimetría.
+
+\section{FEFO y reposición}
+
+FEFO filtra lotes vencidos o sin stock, ordena los elegibles por (fecha de vencimiento, código) y toma $\min(\text{pendiente},\text{disponible})$. Una fecha igual a la fecha de evaluación se considera elegible. Si el stock no alcanza, se devuelve un plan parcial informativo, pero \code{reserva_confirmada=False}; la función no modifica los lotes. El costo es $O(L\log L)$ tiempo y $O(L)$ espacio.
+
+La posición de inventario se calcula como
+\[
+\text{posición}=\text{disponible}+\text{en orden}-\text{reservado}.
+\]
+Si posición $\leq$ mínimo, la sugerencia es $\max(0,\text{objetivo}-\text{posición})$; de lo contrario es cero. Con disponible 18, en orden 10, reservado 5, mínimo 30 y objetivo 50, la posición es 23 y la sugerencia 27. Registrar esas 27 unidades en \emph{en orden} lleva la posición a 50 y evita otra sugerencia secuencial. En producción se requiere transacción o clave idempotente para evitar duplicados concurrentes. El algoritmo cuesta $O(P)$ tiempo y $O(P)$ para la salida.
+
+\section{Diez correos: decisión y complejidad}
+
+P está contenido en NP; las clases no son compartimentos disjuntos. Para afirmar NP-completitud se justifican pertenencia a NP y NP-hardness. Los diez problemas sobre entradas finitas son decidibles y computables.
+
+\begin{longtable}{@{}p{1cm}p{3cm}p{2.2cm}p{3.2cm}p{4.2cm}@{}}
+\toprule
+ID & Problema & Clase sustentada & Búsqueda exacta & Certificado o reducción \\ \midrule
+\endhead
+P1 & Alcanzabilidad & P & BFS, $O(V+E)$ & Camino verificable.\\
+P2 & Ruta mínima & P & Dijkstra, $O((V+E)\log V)$ & Ruta y suma de pesos.\\
+P3 & Flujo máximo & P & Edmonds--Karp, $O(VE^2)$ & Flujo factible y corte.\\
+N1 & Isomorfismo & NP & Permutaciones, $O(n!n^2)$ & Bijección, verificación $O(n^2)$.\\
+N2 & Divisor acotado & NP & Hasta $B$ candidatos & Divisor $d$; se distingue $B$ de $\log B$.\\
+N3 & Logaritmo discreto acotado & NP & Residuos hasta $B$ & Exponente y potencia modular rápida.\\
+N4 & Automorfismo no trivial & NP & Permutaciones & Bijección no identidad.\\
+C1 & 3-SAT decisión & NP-completo & DPLL exponencial & SAT $\leq_p$ 3-SAT; asignación verificable.\\
+C2 & TSP decisión & NP-completo & Tours, $O(n!n)$ & Ciclo Hamiltoniano $\leq_p$ TSP.\\
+C3 & Vertex Cover & NP-completo & Subconjuntos & Independent Set $\leq_p$ Vertex Cover.\\
+\bottomrule
+\end{longtable}
+
+La instancia C1 tiene cláusulas de dos literales y pertenece a 2-SAT, resoluble en P; la clasificación NP-completa corresponde al problema 3-SAT general. C2 pregunta si existe un ciclo de costo a lo sumo $L$, no solicita la optimización del mejor tour. C3 cubre corredores por sus extremos y por eso es Vertex Cover; cubrir zonas vecinas correspondería a Dominating Set.
+
+\section{Decidibilidad y problema de la parada}
+
+\textbf{Decidibilidad} exige un algoritmo que termine para toda entrada válida y responda Sí o No. \textbf{Computabilidad} pregunta si un procedimiento efectivo puede calcular una función, como una ruta. \textbf{Complejidad} mide recursos asintóticos según el tamaño de entrada. \textbf{Eficiencia práctica} depende también del tamaño real, memoria, constantes y límites operativos.
+
+Vertex Cover es decidible por enumeración de los $2^{|V|}$ subconjuntos, pero esa búsqueda puede ser impracticable para una red grande. TSP presenta el mismo contraste con tours factoriales. La dificultad práctica no implica indecidibilidad.
+
+El problema general de la parada pregunta si un programa arbitrario termina con una entrada dada. No existe un decisor universal correcto para todos los pares programa--entrada. La diferencia no es falta de tiempo o memoria: el decisor universal no existe. En cambio, los diez casos logísticos tienen espacios finitos y procedimientos que terminan.
+
+\section{Implementación y pruebas}
+
+El código separa los solucionadores de las presentaciones de demostración. La suite ejecutada el 25 de noviembre de 2026 contiene 46 métodos de prueba y finalizó con \code{OK}. Además se ejecutaron los tres módulos solicitados. La evidencia completa está en \code{docs/evidencias/resultados\_tests.txt}.
+
+\begin{lstlisting}
+python3 -m unittest discover -s tests -v
+python3 -m src.planta_amr
+python3 -m src.fefo_reposicion
+python3 -m src.correos
+\end{lstlisting}
+
+GitHub Actions ejecuta la suite y las demostraciones en Python 3.10, 3.11 y 3.12 para pushes a \code{main} y \code{finalizacion-deber2}, y para pull requests.
+
+\section{Gestión, comunicación y estado de entrega}
+
+El historial original contiene ocho commits del 23 de noviembre de 2026, todos atribuidos por Git a Ariana Simone Muñoz Villamar. Los commits documentan correos, TSP, CI, JFLAP, Dijkstra, FEFO y 44 pruebas históricas. La cifra vigente es 46 después de ampliar la auditoría de autómatas. No hay evidencia de reuniones, responsables individuales adicionales, revisiones ni retrospectivas; esos datos quedan pendientes de confirmación del equipo.
+
+Los tres sprints se organizan como: (1) autómatas y grafo, (2) Dijkstra, FEFO y reposición, (3) correos, integración, informe, presentación y release. Se propone \code{v1.0.0}, pero no se crea tag ni release sin revisión y autorización. La presentación contiene doce diapositivas y notas para una exposición de 8--10 minutos.
+
+\section{Correspondencia con la rúbrica}
+
+\begin{tabularx}{\textwidth}{@{}XcX@{}}
+\toprule
+Criterio & Puntaje & Evidencia \\ \midrule
+Autómatas y secuencias & 2,0 & Tres JFF completos, formalización y pruebas; capturas JFLAP pendientes.\\
+Grafo y rutas & 1,5 & Grafo, Dijkstra, dos óptimos de 11 m y pruebas.\\
+FEFO y reposición & 1,5 & Política, fórmula 23/27, código y pruebas.\\
+Decidibilidad y complejidad & 1,5 & Diez fichas, reducciones y contraste con parada.\\
+Implementación y pruebas & 1,5 & 46 pruebas y tres demostraciones reproducibles.\\
+Gestión y versiones & 1,0 & Historial conciliado, tres sprints y candidato de versión.\\
+Comunicación y reflexión & 1,0 & Informe editable y presentación con guion.\\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusiones}
+
+Los procesos logísticos quedaron representados sin saltos que permitan consumir, despachar o enviar antes de cumplir sus precondiciones. El grafo confirma dos rutas óptimas de 11 m. FEFO y reposición distinguen cálculo de confirmación transaccional. Los diez casos muestran por qué encontrar una solución puede ser costoso aun cuando verificarla resulte polinómico. La suite automatizada respalda la implementación, pero no reemplaza la revisión visual en JFLAP ni la confirmación humana de actividades del equipo.
+
+\section*{Referencias}
+\addcontentsline{toc}{section}{Referencias}
+\begin{enumerate}
+\item Equipo LOGISTPULSE. \emph{Deber 2 de Teoría de la Computación}, informe previo aportado, 2026.
+\item JFLAP. \emph{JFLAP Software, versión 7.1}. \url{https://www.jflap.org/jflaptmp/}
+\item Cormen, T.; Leiserson, C.; Rivest, R.; Stein, C. \emph{Introduction to Algorithms}. MIT Press.
+\item Sipser, M. \emph{Introduction to the Theory of Computation}. Cengage.
+\end{enumerate}
+
+\appendix
+\section{Archivos y reproducibilidad}
+
+Los modelos están en \code{jflap/}; el código en \code{src/}; las pruebas en \code{tests/}; la documentación y evidencia en \code{docs/}. La matriz de auditoría está en \code{docs/auditoria\_entrega.md}. Para finalizar manualmente deben incorporarse seis capturas auténticas a \code{docs/evidencias/jflap/}, confirmar responsables y revisiones, y autorizar el tag/release.
+
+\end{document}
