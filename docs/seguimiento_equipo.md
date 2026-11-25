@@ -6,20 +6,30 @@ Integrantes:
 - Ariana Muñoz — @asmunozv
 - Jeanneth — @jann1111
 
-## 1. Registro de revisiones cruzadas
+## 1. Tabla principal de avance
+
+| Sprint | Retrospectiva | Estado del documento | Pendiente para cerrar |
+|---|---|---|---|
+| Sprint 1 — Modelado formal | Borrador redactado | **Borrador incorporado** | Ariana y Jeanneth deben validarlo y completar la fecha real de conversación |
+| Sprint 2 — Algoritmos logísticos | Borrador redactado | **Borrador incorporado** | Ariana y Jeanneth deben validarlo y completar la fecha real de conversación |
+| Sprint 3 — Complejidad e integración | Borrador redactado | **Borrador incorporado** | Ariana y Jeanneth deben validarlo y completar la fecha real de conversación |
+
+**Cómo leer los estados:** la redacción de los tres borradores ya está incorporada al repositorio. Eso no significa que las retrospectivas ya se hayan realizado ni que ambas integrantes hayan aprobado su contenido. La validación y la fecha real siguen pendientes.
+
+## 2. Registro de revisiones cruzadas
 
 Registrar una fila después de que la revisión se haya realizado.
 
 | Fecha real | Persona revisora | Trabajo revisado | Observación / comprobación | Corrección acordada | Estado |
 |---|---|---|---|---|---|
-| Por completar | Jeanneth | Autómatas JFLAP de Ariana | Por completar | Por completar | Pendiente |
-| Por completar | Ariana | Grafo AMR y Dijkstra | Por completar | Por completar | Pendiente |
-| Por completar | Jeanneth | FEFO y reposición | Por completar | Por completar | Pendiente |
-| Por completar | Ariana | Informe y clasificación P/NP | Por completar | Por completar | Pendiente |
+| Por registrar | Jeanneth | Autómatas JFLAP de Ariana | Pendiente de revisión | Pendiente de acordar | Pendiente de realizar |
+| Por registrar | Ariana | Grafo AMR y Dijkstra | Pendiente de revisión | Pendiente de acordar | Pendiente de realizar |
+| Por registrar | Jeanneth | FEFO y reposición | Pendiente de revisión | Pendiente de acordar | Pendiente de realizar |
+| Por registrar | Ariana | Informe y clasificación P/NP | Pendiente de revisión | Pendiente de acordar | Pendiente de realizar |
 
 La tabla propone qué revisar; no afirma que esas revisiones ya hayan ocurrido. Si la revisión se hace mediante Pull Request, añadir el enlace del PR en la observación.
 
-## 2. Retrospectiva del Sprint 1 — Modelado formal
+## 3. Retrospectiva del Sprint 1 — Modelado formal
 
 > **Borrador propuesto para validar con ambas integrantes.** Editar cualquier punto que no represente lo que realmente ocurrió.
 
@@ -30,7 +40,7 @@ La tabla propone qué revisar; no afirma que esas revisiones ya hayan ocurrido. 
 - **Qué mejorar en el siguiente sprint:** Antes de implementar, dejar acordados los símbolos, estados, transiciones y casos de prueba. Hacer una revisión cruzada de los modelos y registrar cualquier corrección en el mismo documento.
 - **Acuerdos propuestos:** Usar una lista breve de casos normales y casos inválidos para revisar cada entregable antes de integrarlo. Responsable y fecha objetivo: por confirmar por el equipo.
 
-## 3. Retrospectiva del Sprint 2 — Algoritmos logísticos
+## 4. Retrospectiva del Sprint 2 — Algoritmos logísticos
 
 > **Borrador propuesto para validar con ambas integrantes.** Editar cualquier punto que no represente lo que realmente ocurrió.
 
@@ -41,7 +51,7 @@ La tabla propone qué revisar; no afirma que esas revisiones ya hayan ocurrido. 
 - **Qué mejorar en el siguiente sprint:** Probar explícitamente los límites y documentar junto a cada algoritmo su entrada, salida y complejidad. Revisar que el código, las pruebas y la explicación del informe utilicen las mismas reglas.
 - **Acuerdos propuestos:** Ejecutar la suite completa después de cada cambio importante y anotar los resultados y errores encontrados. Responsable y fecha objetivo: por confirmar por el equipo.
 
-## 4. Retrospectiva del Sprint 3 — Complejidad, integración y entrega
+## 5. Retrospectiva del Sprint 3 — Complejidad, integración y entrega
 
 > **Borrador propuesto para validar con ambas integrantes.** Editar cualquier punto que no represente lo que realmente ocurrió.
 
@@ -52,7 +62,7 @@ La tabla propone qué revisar; no afirma que esas revisiones ya hayan ocurrido. 
 - **Qué mejorar en futuros trabajos:** Distribuir las revisiones con anticipación, reservar tiempo específico para corregir el informe y comprobar todos los archivos de entrega antes de publicar la versión final. Mantener una lista de verificación compartida desde el inicio.
 - **Acuerdos propuestos:** Antes de cerrar el proyecto, comprobar que el PDF y la presentación estén actualizados, ejecutar las pruebas finales y verificar que las evidencias estén incluidas. Responsable y fecha objetivo: por confirmar por el equipo.
 
-## 5. Lista de control del release final
+## 6. Lista de control del release final
 
 Marcar únicamente cuando exista evidencia:
 
