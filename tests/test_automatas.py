@@ -1,56 +1,161 @@
-"""Valida sintaxis JFLAP y doce secuencias exigidas por la rúbrica."""
+"""Auditoría estructural y funcional de los tres DFA JFLAP."""
+from collections import deque
 from pathlib import Path
 import unittest
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-PRUEBAS = {
-    "pedido": [("abcdef", True), ("ax", True), ("e", False), ("ae", False), ("a", False)],
-    "reserva": [("abc", True), ("abl", True), ("c", False), ("ac", False)],
-    "compra": [("aer", True), ("ax", True), ("xe", False), ("e", False)],
+
+ESPECIFICACIONES = {
+    "pedido": {
+        "estados": {"Borrador", "Confirmado", "Reservado", "Preparacion",
+                    "Empacado", "Despachado", "Entregado", "Cancelado"},
+        "inicial": "Borrador",
+        "finales": {"Entregado", "Cancelado"},
+        "alfabeto": set("abcdefx"),
+        "casos": [
+            ("abcdef", True, ["Borrador", "Confirmado", "Reservado", "Preparacion",
+                               "Empacado", "Despachado", "Entregado"]),
+            ("abx", True, ["Borrador", "Confirmado", "Reservado", "Cancelado"]),
+            ("x", True, ["Borrador", "Cancelado"]),
+            ("", False, ["Borrador"]),
+            ("abcde", False, ["Borrador", "Confirmado", "Reservado", "Preparacion",
+                                "Empacado", "Despachado"]),
+            ("ae", False, ["Borrador", "Confirmado"]),
+            ("abcdefx", False, ["Borrador", "Confirmado", "Reservado", "Preparacion",
+                                  "Empacado", "Despachado", "Entregado"]),
+        ],
+    },
+    "reserva": {
+        "estados": {"Solicitada", "Validada", "Reservada", "Consumida", "Liberada",
+                    "Rechazada", "Expirada"},
+        "inicial": "Solicitada",
+        "finales": {"Consumida", "Liberada", "Rechazada", "Expirada"},
+        "alfabeto": set("abclrv"),
+        "casos": [
+            ("abc", True, ["Solicitada", "Validada", "Reservada", "Consumida"]),
+            ("abl", True, ["Solicitada", "Validada", "Reservada", "Liberada"]),
+            ("abv", True, ["Solicitada", "Validada", "Reservada", "Expirada"]),
+            ("r", True, ["Solicitada", "Rechazada"]),
+            ("", False, ["Solicitada"]),
+            ("ac", False, ["Solicitada", "Validada"]),
+            ("av", False, ["Solicitada", "Validada"]),
+            ("abvc", False, ["Solicitada", "Validada", "Reservada", "Expirada"]),
+        ],
+    },
+    "compra": {
+        "estados": {"Borrador", "En aprobacion", "Aprobada", "Enviada",
+                    "Recepcion parcial", "Recibida", "Rechazada"},
+        "inicial": "Borrador",
+        "finales": {"Recibida", "Rechazada"},
+        "alfabeto": set("apecrx"),
+        "casos": [
+            ("apec", True, ["Borrador", "En aprobacion", "Aprobada", "Enviada", "Recibida"]),
+            ("aperc", True, ["Borrador", "En aprobacion", "Aprobada", "Enviada",
+                               "Recepcion parcial", "Recibida"]),
+            ("aperrc", True, ["Borrador", "En aprobacion", "Aprobada", "Enviada",
+                                "Recepcion parcial", "Recepcion parcial", "Recibida"]),
+            ("ax", True, ["Borrador", "En aprobacion", "Rechazada"]),
+            ("", False, ["Borrador"]),
+            ("ae", False, ["Borrador", "En aprobacion"]),
+            ("ap", False, ["Borrador", "En aprobacion", "Aprobada"]),
+            ("xe", False, ["Borrador", "Rechazada"]),
+        ],
+    },
 }
 
+
 def cargar(nombre):
-    tree = ET.parse(ROOT / "jflap" / (nombre + ".jff"))
-    assert tree.findtext("./type") == "fa"
+    ruta = ROOT / "jflap" / f"{nombre}.jff"
+    tree = ET.parse(ruta)
+    if tree.getroot().tag != "structure" or tree.findtext("./type") != "fa":
+        raise ValueError("Estructura JFLAP inválida")
     auto = tree.find("./automaton")
-    estados = auto.findall("state")
-    ids = {e.get("id") for e in estados}
-    inicial = [e.get("id") for e in estados if e.find("initial") is not None]
-    finales = {e.get("id") for e in estados if e.find("final") is not None}
-    if len(inicial) != 1 or not finales or not finales.issubset(ids):
+    estados_xml = auto.findall("state")
+    ids = {e.get("id") for e in estados_xml}
+    nombres = {e.get("id"): e.get("name") for e in estados_xml}
+    if None in ids or len(ids) != len(estados_xml) or len(set(nombres.values())) != len(nombres):
+        raise ValueError("Identificadores o nombres de estado inválidos")
+    iniciales = [e.get("id") for e in estados_xml if e.find("initial") is not None]
+    finales = {e.get("id") for e in estados_xml if e.find("final") is not None}
+    if len(iniciales) != 1 or not finales or not finales.issubset(ids):
         raise ValueError("Estados inicial/final inválidos")
     delta = {}
-    for t in auto.findall("transition"):
-        orig, dest = t.findtext("from"), t.findtext("to")
-        sim = t.findtext("read")
-        if orig not in ids or dest not in ids or sim is None or len(sim) != 1:
+    for transicion in auto.findall("transition"):
+        origen = transicion.findtext("from")
+        destino = transicion.findtext("to")
+        simbolo = transicion.findtext("read")
+        if origen not in ids or destino not in ids or simbolo is None or len(simbolo) != 1:
             raise ValueError("Transición JFLAP inválida")
-        if (orig, sim) in delta:
-            raise ValueError("No determinista")
-        delta[(orig, sim)] = dest
-    return inicial[0], finales, delta
+        if (origen, simbolo) in delta:
+            raise ValueError("Autómata no determinista")
+        delta[(origen, simbolo)] = destino
+    return {"inicial": iniciales[0], "finales": finales, "delta": delta,
+            "nombres": nombres, "estados": ids}
 
-def acepta(modelo, palabra):
-    actual, finales, delta = modelo
+
+def ejecutar(modelo, palabra):
+    actual = modelo["inicial"]
+    traza = [modelo["nombres"][actual]]
     for simbolo in palabra:
-        actual = delta.get((actual, simbolo))
-        if actual is None:
-            return False
-    return actual in finales
+        siguiente = modelo["delta"].get((actual, simbolo))
+        if siguiente is None:
+            return False, traza
+        actual = siguiente
+        traza.append(modelo["nombres"][actual])
+    return actual in modelo["finales"], traza
+
 
 class TestJFLAP(unittest.TestCase):
-    def test_docean_pruebas_y_transiciones(self):
-        for nombre, casos in PRUEBAS.items():
-            modelo = cargar(nombre)
-            for entrada, esperado in casos:
-                with self.subTest(automata=nombre, entrada=entrada):
-                    self.assertEqual(acepta(modelo, entrada), esperado)
+    def test_definicion_formal_exacta(self):
+        for nombre, especificacion in ESPECIFICACIONES.items():
+            with self.subTest(automata=nombre):
+                modelo = cargar(nombre)
+                self.assertEqual(set(modelo["nombres"].values()), especificacion["estados"])
+                self.assertEqual(modelo["nombres"][modelo["inicial"]], especificacion["inicial"])
+                self.assertEqual({modelo["nombres"][i] for i in modelo["finales"]},
+                                 especificacion["finales"])
+                self.assertEqual({simbolo for _, simbolo in modelo["delta"]},
+                                 especificacion["alfabeto"])
 
-    def test_sin_transiciones_epsilon(self):
-        for nombre in PRUEBAS:
-            _, _, delta = cargar(nombre)
-            self.assertTrue(all(len(sim) == 1 for _, sim in delta))
+    def test_todos_los_estados_son_alcanzables(self):
+        for nombre in ESPECIFICACIONES:
+            modelo = cargar(nombre)
+            alcanzados = {modelo["inicial"]}
+            cola = deque(alcanzados)
+            while cola:
+                origen = cola.popleft()
+                for (u, _), destino in modelo["delta"].items():
+                    if u == origen and destino not in alcanzados:
+                        alcanzados.add(destino)
+                        cola.append(destino)
+            with self.subTest(automata=nombre):
+                self.assertEqual(alcanzados, modelo["estados"])
+
+    def test_cadenas_y_trazas(self):
+        for nombre, especificacion in ESPECIFICACIONES.items():
+            modelo = cargar(nombre)
+            for entrada, esperado, traza in especificacion["casos"]:
+                with self.subTest(automata=nombre, entrada=entrada):
+                    observado, traza_observada = ejecutar(modelo, entrada)
+                    self.assertEqual(observado, esperado)
+                    self.assertEqual(traza_observada, traza)
+
+    def test_dfa_parcial_equivale_a_total_con_pozo(self):
+        for nombre, especificacion in ESPECIFICACIONES.items():
+            modelo = cargar(nombre)
+            faltantes = {(estado, simbolo) for estado in modelo["estados"]
+                         for simbolo in especificacion["alfabeto"]
+                         if (estado, simbolo) not in modelo["delta"]}
+            with self.subTest(automata=nombre):
+                self.assertTrue(faltantes)
+                total = dict(modelo["delta"])
+                total.update({par: "POZO" for par in faltantes})
+                total.update({("POZO", simbolo): "POZO"
+                              for simbolo in especificacion["alfabeto"]})
+                self.assertEqual(len(total),
+                                 (len(modelo["estados"]) + 1) * len(especificacion["alfabeto"]))
+
 
 if __name__ == "__main__":
     unittest.main()

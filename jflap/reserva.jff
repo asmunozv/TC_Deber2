@@ -31,11 +31,17 @@
       <y>295.0</y>
       <final/>
     </state>
+    <state id="6" name="Expirada">
+      <x>505.0</x>
+      <y>295.0</y>
+      <final/>
+    </state>
     <transition><from>0</from><to>1</to><read>a</read></transition>
     <transition><from>1</from><to>2</to><read>b</read></transition>
     <transition><from>2</from><to>3</to><read>c</read></transition>
     <transition><from>2</from><to>4</to><read>l</read></transition>
     <transition><from>0</from><to>5</to><read>r</read></transition>
     <transition><from>1</from><to>5</to><read>r</read></transition>
+    <transition><from>2</from><to>6</to><read>v</read></transition>
   </automaton>
 </structure>

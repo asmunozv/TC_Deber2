@@ -46,5 +46,8 @@
     <transition><from>5</from><to>6</to><read>f</read></transition>
     <transition><from>0</from><to>7</to><read>x</read></transition>
     <transition><from>1</from><to>7</to><read>x</read></transition>
+    <!-- Desde Reservado, x representa liberar el inventario y cancelar
+         como una única operación de negocio. -->
+    <transition><from>2</from><to>7</to><read>x</read></transition>
   </automaton>
 </structure>

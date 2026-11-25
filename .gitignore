@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+.coverage
+htmlcov/
+work/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+
+# Las seis capturas JFLAP deben añadirse deliberadamente después de ejecutarlas.
+docs/evidencias/jflap/*.png
+!docs/evidencias/jflap/README.md
